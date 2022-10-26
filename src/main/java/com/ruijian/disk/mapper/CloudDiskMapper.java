@@ -2,6 +2,7 @@ package com.ruijian.disk.mapper;
 
 import com.ruijian.disk.pojo.CloudDisk;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CloudDiskMapper {
@@ -16,4 +17,9 @@ public interface CloudDiskMapper {
     int updateByPrimaryKeySelective(CloudDisk record);
 
     int updateByPrimaryKey(CloudDisk record);
+
+    boolean updateUserSize(@Param("size") int size,
+                           @Param("opt") String opt,
+                           @Param("diskId")Long diskId
+    );
 }
