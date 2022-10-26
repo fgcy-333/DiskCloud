@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruijian.disk.mapper.CloudFileShareMapper">
+  <resultMap id="BaseResultMap" type="com.ruijian.disk.pojo.CloudFileShare">
+    <id column="share_id" jdbcType="BIGINT" property="shareId" />
+    <result column="portal_user_id" jdbcType="BIGINT" property="portalUserId" />
+    <result column="file_id" jdbcType="BIGINT" property="fileId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_type" jdbcType="INTEGER" property="fileType" />
+    <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="validity_type" jdbcType="INTEGER" property="validityType" />
+    <result column="validity_time" jdbcType="TIMESTAMP" property="validityTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="share_code" jdbcType="VARCHAR" property="shareCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    share_id, portal_user_id, file_id, file_name, file_type, share_url, status, validity_type, 
+    validity_time, create_time, password, share_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cloud_file_share
+    where share_id = #{shareId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cloud_file_share
+    where share_id = #{shareId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudFileShare">
+    insert into cloud_file_share (share_id, portal_user_id, file_id, 
+      file_name, file_type, share_url, 
+      status, validity_type, validity_time, 
+      create_time, password, share_code
+      )
+    values (#{shareId,jdbcType=BIGINT}, #{portalUserId,jdbcType=BIGINT}, #{fileId,jdbcType=BIGINT}, 
+      #{fileName,jdbcType=VARCHAR}, #{fileType,jdbcType=INTEGER}, #{shareUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{validityType,jdbcType=INTEGER}, #{validityTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, #{shareCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruijian.disk.pojo.CloudFileShare">
+    insert into cloud_file_share
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shareId != null">
+        share_id,
+      </if>
+      <if test="portalUserId != null">
+        portal_user_id,
+      </if>
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="shareUrl != null">
+        share_url,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="validityType != null">
+        validity_type,
+      </if>
+      <if test="validityTime != null">
+        validity_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="shareCode != null">
+        share_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shareId != null">
+        #{shareId,jdbcType=BIGINT},
+      </if>
+      <if test="portalUserId != null">
+        #{portalUserId,jdbcType=BIGINT},
+      </if>
+      <if test="fileId != null">
+        #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="shareUrl != null">
+        #{shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="validityType != null">
+        #{validityType,jdbcType=INTEGER},
+      </if>
+      <if test="validityTime != null">
+        #{validityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="shareCode != null">
+        #{shareCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruijian.disk.pojo.CloudFileShare">
+    update cloud_file_share
+    <set>
+      <if test="portalUserId != null">
+        portal_user_id = #{portalUserId,jdbcType=BIGINT},
+      </if>
+      <if test="fileId != null">
+        file_id = #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        file_type = #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="shareUrl != null">
+        share_url = #{shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="validityType != null">
+        validity_type = #{validityType,jdbcType=INTEGER},
+      </if>
+      <if test="validityTime != null">
+        validity_time = #{validityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="shareCode != null">
+        share_code = #{shareCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where share_id = #{shareId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruijian.disk.pojo.CloudFileShare">
+    update cloud_file_share
+    set portal_user_id = #{portalUserId,jdbcType=BIGINT},
+      file_id = #{fileId,jdbcType=BIGINT},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_type = #{fileType,jdbcType=INTEGER},
+      share_url = #{shareUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      validity_type = #{validityType,jdbcType=INTEGER},
+      validity_time = #{validityTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      password = #{password,jdbcType=VARCHAR},
+      share_code = #{shareCode,jdbcType=VARCHAR}
+    where share_id = #{shareId,jdbcType=BIGINT}
+  </update>
+</mapper>

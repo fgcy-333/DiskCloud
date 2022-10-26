@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruijian.disk.mapper.CloudFileMapper">
+  <resultMap id="BaseResultMap" type="com.ruijian.disk.pojo.CloudFile">
+    <id column="file_id" jdbcType="BIGINT" property="fileId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="ftp_file_name" jdbcType="VARCHAR" property="ftpFileName" />
+    <result column="show_path" jdbcType="VARCHAR" property="showPath" />
+    <result column="portal_user_id" jdbcType="BIGINT" property="portalUserId" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="download_times" jdbcType="INTEGER" property="downloadTimes" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+    <result column="folder_id" jdbcType="BIGINT" property="folderId" />
+    <result column="size" jdbcType="INTEGER" property="size" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="postfix" jdbcType="VARCHAR" property="postfix" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    file_id, file_name, ftp_file_name, show_path, portal_user_id, file_path, download_times, 
+    upload_time, folder_id, size, type, version, postfix, update_time, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cloud_file
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cloud_file
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudFile">
+    insert into cloud_file (file_id, file_name, ftp_file_name, 
+      show_path, portal_user_id, file_path, 
+      download_times, upload_time, folder_id, 
+      size, type, version, 
+      postfix, update_time, is_delete
+      )
+    values (#{fileId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{ftpFileName,jdbcType=VARCHAR}, 
+      #{showPath,jdbcType=VARCHAR}, #{portalUserId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR}, 
+      #{downloadTimes,jdbcType=INTEGER}, #{uploadTime,jdbcType=TIMESTAMP}, #{folderId,jdbcType=BIGINT}, 
+      #{size,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
+      #{postfix,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruijian.disk.pojo.CloudFile">
+    insert into cloud_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="ftpFileName != null">
+        ftp_file_name,
+      </if>
+      <if test="showPath != null">
+        show_path,
+      </if>
+      <if test="portalUserId != null">
+        portal_user_id,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="downloadTimes != null">
+        download_times,
+      </if>
+      <if test="uploadTime != null">
+        upload_time,
+      </if>
+      <if test="folderId != null">
+        folder_id,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="postfix != null">
+        postfix,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ftpFileName != null">
+        #{ftpFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="showPath != null">
+        #{showPath,jdbcType=VARCHAR},
+      </if>
+      <if test="portalUserId != null">
+        #{portalUserId,jdbcType=BIGINT},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadTimes != null">
+        #{downloadTimes,jdbcType=INTEGER},
+      </if>
+      <if test="uploadTime != null">
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="folderId != null">
+        #{folderId,jdbcType=BIGINT},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="postfix != null">
+        #{postfix,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruijian.disk.pojo.CloudFile">
+    update cloud_file
+    <set>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ftpFileName != null">
+        ftp_file_name = #{ftpFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="showPath != null">
+        show_path = #{showPath,jdbcType=VARCHAR},
+      </if>
+      <if test="portalUserId != null">
+        portal_user_id = #{portalUserId,jdbcType=BIGINT},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadTimes != null">
+        download_times = #{downloadTimes,jdbcType=INTEGER},
+      </if>
+      <if test="uploadTime != null">
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="folderId != null">
+        folder_id = #{folderId,jdbcType=BIGINT},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="postfix != null">
+        postfix = #{postfix,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruijian.disk.pojo.CloudFile">
+    update cloud_file
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      ftp_file_name = #{ftpFileName,jdbcType=VARCHAR},
+      show_path = #{showPath,jdbcType=VARCHAR},
+      portal_user_id = #{portalUserId,jdbcType=BIGINT},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      download_times = #{downloadTimes,jdbcType=INTEGER},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      folder_id = #{folderId,jdbcType=BIGINT},
+      size = #{size,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      version = #{version,jdbcType=INTEGER},
+      postfix = #{postfix,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where file_id = #{fileId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,44 @@
+package com.ruijian.disk.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.Date;
+
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class CloudFile {
+    private Long fileId;
+
+    private String fileName;
+
+    private String ftpFileName;
+
+    private String showPath;
+
+    private Long portalUserId;
+
+    private String filePath;
+
+    private Integer downloadTimes;
+
+    private Date uploadTime;
+
+    private Long folderId;
+
+    private Integer size;
+
+    private Integer type;
+
+    private Integer version;
+
+    private String postfix;
+
+    private Date updateTime;
+
+    private Integer isDelete;
+}

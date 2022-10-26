@@ -1,0 +1,18 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /disk
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud_disk?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: root123
+
+mybatis:
+  #指定mapper文件的位置
+  mapper-locations: classpath:mapper/*.xml
+  #指定mybatis的日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
