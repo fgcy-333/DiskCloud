@@ -1,6 +1,5 @@
 package com.ruijian.disk;
 
-import bio.nvwa.boot.hdfs.HdfsService;
 import com.ruijian.disk.util.HdfsUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

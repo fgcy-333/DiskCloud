@@ -1,7 +1,11 @@
 package com.ruijian.disk.mapper;
 
 import com.ruijian.disk.pojo.CloudFolder;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface CloudFolderMapper {
     int deleteByPrimaryKey(Long folderId);
 
@@ -14,4 +18,6 @@ public interface CloudFolderMapper {
     int updateByPrimaryKeySelective(CloudFolder record);
 
     int updateByPrimaryKey(CloudFolder record);
+
+    List<CloudFolder> getFoldersByParentFolderId(Long folderId);
 }

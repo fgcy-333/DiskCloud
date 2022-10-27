@@ -4,12 +4,13 @@ import com.ruijian.disk.mapper.CloudDiskMapper;
 import com.ruijian.disk.mapper.CloudFileMapper;
 import com.ruijian.disk.pojo.CloudDisk;
 import com.ruijian.disk.pojo.CloudFile;
+import com.ruijian.disk.pojo.CloudFolder;
 import com.ruijian.disk.service.CloudDiskService;
 import com.ruijian.disk.service.CloudFileService;
 import com.ruijian.disk.service.CloudFolderService;
-import com.ruijian.disk.util.Const;
-import org.apache.ibatis.annotations.Param;
-import org.checkerframework.checker.units.qual.A;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class CloudDiskServiceImpl implements CloudDiskService {
 
     @Autowired
     private CloudFolderService cloudFolderService;
+
+    private static Logger log = LoggerFactory.getLogger(CloudDiskServiceImpl.class);
 
     /**
      * 获取个人磁盘信息
@@ -50,7 +53,19 @@ public class CloudDiskServiceImpl implements CloudDiskService {
     @Override
     public boolean updateDiskUsageFile(Long fileId, Long diskId, String opt) {
         final int size = cloudFileMapper.getSizeByFileId(fileId);
-        return cloudDiskMapper.updateUserSize(size, opt, diskId);
+        return updateUserSize(size, opt, diskId);
+    }
+
+    /**
+     * 更新个人磁盘占用
+     *
+     * @param size
+     * @param opt
+     * @param diskId
+     * @return
+     */
+    private boolean updateUserSize(int size, String opt, Long diskId) {
+        return updateUserSize(size, opt, diskId);
     }
 
 
@@ -61,22 +76,45 @@ public class CloudDiskServiceImpl implements CloudDiskService {
      * @return
      */
     @Override
-    public boolean updateDiskUsageFolder(Long folderId, Long diskId, String opt) {
+    public boolean updateDiskUsageFolder(Long folderId, Long diskId, String opt) throws Exception {
         int size = getSizeByFolderId(folderId);
-        // TODO: 2022/10/26
-        return true;
+        return updateUserSize(size, opt, diskId);
     }
 
-    private int getSizeByFolderId(Long folderId) {
+    /**
+     * 获取某个文件夹大小
+     *
+     * @param folderId
+     * @return
+     * @throws Exception
+     */
+    private int getSizeByFolderId(Long folderId) throws Exception {
         final ArrayList<Integer> param = new ArrayList<>();
         param.add(0);
         getSizeRecursion(folderId, param);
         return param.get(0);
     }
 
-    private void getSizeRecursion(Long folderId, ArrayList<Integer> param) {
-        final Integer size = param.get(0);
-        List<CloudFile> cloudFiles = cloudFileService.getFileObjByFolderId(folderId);
+    /**
+     * 递归获取 某个文件夹的大小
+     *
+     * @param folderId
+     * @param param
+     * @throws Exception
+     */
+    private void getSizeRecursion(Long folderId, ArrayList<Integer> param) throws Exception {
+        Integer size = param.get(0);
+        //处理文件夹中的文件
+        List<CloudFile> cloudFiles = cloudFileService.getFileObjsByFolderId(folderId);
+        for (CloudFile cloudFile : cloudFiles) {
+            final int sizeByFileId = cloudFileService.getSizeByFileId(cloudFile.getFileId());
+            size += sizeByFileId;
+        }
+        //处理文件夹中的文件夹
+        List<CloudFolder> folders = cloudFolderService.getFolderObjsByParentFolderId(folderId);
+        for (CloudFolder folder : folders) {
+            getSizeRecursion(folder.getFolderId(), param);
+        }
     }
 
 }

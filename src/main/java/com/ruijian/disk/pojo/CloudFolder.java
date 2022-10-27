@@ -18,7 +18,7 @@ public class CloudFolder {
 
     private Long parentFolderId;
 
-    private String ftpFolderName;
+    private String hdfsFolderName;
 
     private Long portalUserId;
 
@@ -31,5 +31,7 @@ public class CloudFolder {
     private Integer folderType;
 
     private Integer isDelete;
+
+    private String folderPath;
 
 }

@@ -16,9 +16,7 @@ public class CloudFile {
 
     private String fileName;
 
-    private String ftpFileName;
-
-    private String showPath;
+    private String hdfsFileName;
 
     private Long portalUserId;
 

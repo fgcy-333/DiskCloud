@@ -8,5 +8,5 @@ public interface CloudDiskService {
 
     boolean updateDiskUsageFile(Long fileId, Long diskId, String opt);
 
-    boolean updateDiskUsageFolder(Long folderId, Long diskId, String opt);
+    boolean updateDiskUsageFolder(Long folderId, Long diskId, String opt) throws Exception;
 }

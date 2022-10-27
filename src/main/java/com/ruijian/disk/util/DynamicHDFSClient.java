@@ -1,10 +1,8 @@
 package com.ruijian.disk.util;
 
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.ruijian.disk.config.HdfsConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;

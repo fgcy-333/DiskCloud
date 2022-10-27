@@ -189,7 +189,7 @@ public class HdfsUtil {
      * 直接往输出流输出文件
      *
      * @param path 活动方式 远程文件
-     * @param os 输出流
+     * @param os   输出流
      * @return
      * @throws Exception
      */
@@ -214,10 +214,10 @@ public class HdfsUtil {
         } catch (Exception e) {
             throw e;
         } finally {
-            if(inputStream != null) {
+            if (inputStream != null) {
                 inputStream.close();
             }
-            if(fs != null) {
+            if (fs != null) {
                 fs.close();
             }
         }
@@ -376,23 +376,24 @@ public class HdfsUtil {
     /**
      * 上传HDFS文件
      *
-     * @param path 上传路径(本服务器文件全路径)
-     * @param uploadPath 目标路径(全节点路径)
+     * @param srcPath 上传路径(本服务器文件全路径)
+     * @param dstPath 目标路径(全节点路径)
      * @throws Exception
      */
-    public void uploadFile(String path, String uploadPath) throws Exception {
-        if (StringUtils.isEmpty(path) || StringUtils.isEmpty(uploadPath)) {
-            return;
+    public boolean uploadFile(String srcPath, String dstPath) throws Exception {
+        if (StringUtils.isEmpty(srcPath) || StringUtils.isEmpty(dstPath)) {
+            return false;
         }
         FileSystem fs = null;
         try {
             fs = getFileSystem();
             // 上传路径
-            Path clientPath = new Path(path);
+            Path clientPath = new Path(srcPath);
             // 目标路径
-            Path serverPath = new Path(uploadPath);
+            Path serverPath = new Path(dstPath);
             // 调用文件系统的文件复制方法，第一个参数是否删除原文件true为删除，默认为false
-            fs.copyFromLocalFile(false, clientPath, serverPath);
+            fs.copyFromLocalFile(true, clientPath, serverPath);
+            return true;
         } catch (Exception e) {
             logger.error("hdfs uploadFile {}", e);
         } finally {
@@ -400,14 +401,14 @@ public class HdfsUtil {
                 fs.close();
             }
         }
-
+        return false;
     }
 
 
     /**
      * 下载HDFS文件
      *
-     * @param path hdfs目标路径
+     * @param path         hdfs目标路径
      * @param downloadPath 客户端存放路径
      * @throws Exception
      */

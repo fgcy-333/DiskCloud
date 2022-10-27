@@ -31,3 +31,6 @@ hdfs:
     userName: root
     dataNode: /dataNodeFile/
 
+file:
+  save:
+    path: D://
