@@ -22,6 +22,9 @@ public class CloudFolderServiceImpl implements CloudFolderService {
      */
     @Override
     public List<CloudFolder> getFolderObjsByParentFolderId(Long folderId) {
+        if (folderId == null) {
+            return null;
+        }
         return cloudFolderMapper.getFoldersByParentFolderId(folderId);
     }
 
@@ -33,9 +36,42 @@ public class CloudFolderServiceImpl implements CloudFolderService {
      */
     @Override
     public String getCurrentPathByFolderId(Long folderId) {
+        if (folderId == null) {
+            return null;
+        }
         final CloudFolder cloudFolder = cloudFolderMapper.selectByPrimaryKey(folderId);
         final String folderPath = cloudFolder.getFolderPath();
         final String hdfsFolderName = cloudFolder.getHdfsFolderName();
-        return folderPath + File.separator + hdfsFolderName;
+        return folderPath + hdfsFolderName;
+    }
+
+    /**
+     * 判断该文件夹是否属于用户
+     *
+     * @param userId
+     * @param folderId
+     * @return
+     */
+    @Override
+    public boolean checkFolderOwner(Long userId, Long folderId) {
+        if (userId == null || folderId == null) {
+            return false;
+        }
+        final CloudFolder folder = cloudFolderMapper.selectByPrimaryKey(folderId);
+        return folder.getPortalUserId().equals(userId);
+    }
+
+    /**
+     * 根据文件夹id 获取文件夹对象
+     *
+     * @param folderId
+     * @return
+     */
+    @Override
+    public CloudFolder getFolderObjByFolderId(Long folderId) {
+        if (folderId == null) {
+            return null;
+        }
+        return cloudFolderMapper.selectByPrimaryKey(folderId);
     }
 }

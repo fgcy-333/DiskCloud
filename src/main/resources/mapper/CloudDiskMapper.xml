@@ -16,17 +16,31 @@
         disk_id, portal_user_id, user_nick, register_time, image_path, current_size, max_size,
     folder_id, open_status
     </sql>
+
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from cloud_disk
         where disk_id = #{diskId,jdbcType=BIGINT}
     </select>
+
+    <!--    根据用户id 获取磁盘信息-->
+    <select id="getByUserId" resultType="com.ruijian.disk.pojo.CloudDisk">
+        select
+        <include refid="Base_Column_List"/>
+        from cloud_disk
+        where portal_user_id =#{userId}
+    </select>
+
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from cloud_disk
         where disk_id = #{diskId,jdbcType=BIGINT}
     </delete>
+
+
     <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudDisk">
         insert into cloud_disk (disk_id, portal_user_id, user_nick,
                                 register_time, image_path, current_size,

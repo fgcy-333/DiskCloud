@@ -13,6 +13,6 @@ public class TestDisk {
 
     @Test
     public void test1() {
-        cloudDiskMapper.updateUserSize(1000, Const.ADD, 2L);
+        cloudDiskMapper.updateUserSize(1000, Const.ADD_DISK_SPACE, 2L);
     }
 }

@@ -8,9 +8,10 @@ public class Const {
     private static final int FILE_TYPE_OTHER = 5;
 
 
-    public static String ADD = "ADD";
+    public static String ADD_DISK_SPACE = "ADD";
 
-    public static String SUBTRACT = "SUBTRACT";
+    public static String SUBTRACT_DISK_SPACE = "SUBTRACT";
+    private static String uniqueStr;
 
     public static int getFileType(String postfix) {
         postfix = postfix.toLowerCase();
@@ -63,4 +64,6 @@ public class Const {
         }
         return type;
     }
+
+
 }

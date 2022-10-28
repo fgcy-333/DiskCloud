@@ -9,6 +9,7 @@ import com.ruijian.disk.service.CloudDiskService;
 import com.ruijian.disk.service.CloudFileService;
 import com.ruijian.disk.service.CloudFolderService;
 
+import com.ruijian.disk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ public class CloudDiskServiceImpl implements CloudDiskService {
     @Override
     public boolean updateDiskUsageFile(Long fileId, Long diskId, String opt) {
         final int size = cloudFileMapper.getSizeByFileId(fileId);
-        return updateUserSize(size, opt, diskId);
+        //KB
+        return updateUserSize(size / 1000, opt, diskId);
     }
 
     /**
@@ -112,9 +114,24 @@ public class CloudDiskServiceImpl implements CloudDiskService {
         }
         //处理文件夹中的文件夹
         List<CloudFolder> folders = cloudFolderService.getFolderObjsByParentFolderId(folderId);
+        if (folders == null || folders.isEmpty()) {
+            return;
+        }
+
         for (CloudFolder folder : folders) {
             getSizeRecursion(folder.getFolderId(), param);
         }
     }
 
+
+    /**
+     * 根据用户id获取个人磁盘信息
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public CloudDisk getDiskInfoByUserId(Long userId) {
+        return cloudDiskMapper.getByUserId(userId);
+    }
 }

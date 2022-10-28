@@ -22,4 +22,6 @@ public interface CloudDiskMapper {
                            @Param("opt") String opt,
                            @Param("diskId")Long diskId
     );
+
+    CloudDisk getByUserId(Long userId);
 }

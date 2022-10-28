@@ -33,4 +33,4 @@ hdfs:
 
 file:
   save:
-    path: D://
+    path: D:/disk/download/

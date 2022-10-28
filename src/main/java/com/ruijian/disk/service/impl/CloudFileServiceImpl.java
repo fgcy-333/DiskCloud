@@ -8,12 +8,14 @@ import com.ruijian.disk.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
 public class CloudFileServiceImpl implements CloudFileService {
     @Autowired
     private CloudFileMapper cloudFileMapper;
+
     @Autowired
     private HdfsUtil hdfsUtil;
 
@@ -25,8 +27,8 @@ public class CloudFileServiceImpl implements CloudFileService {
      */
     @Override
     public int getSizeByFileId(Long fileId) throws Exception {
-        if (fileId != null && !StringUtil.inNumber(String.valueOf(fileId))) {
-            throw new Exception(fileId + " is not a number");
+        if (fileId == null) {
+            return 0;
         }
         return cloudFileMapper.getSizeByFileId(fileId);
     }
@@ -40,20 +42,47 @@ public class CloudFileServiceImpl implements CloudFileService {
      */
     @Override
     public List<CloudFile> getFileObjsByFolderId(Long folderId) {
+        if (folderId == null) {
+            return null;
+        }
         return cloudFileMapper.getFileObjByFolderId(folderId);
     }
 
+
     /**
-     * 文件上传
+     * 添加一条文件记录
      *
-     * @param srcPath
-     * @param dstPath
-     * @param override
+     * @param file
+     */
+    @Override
+    public void addFileRecord(CloudFile file) {
+        file.setUploadTime(new Timestamp(System.currentTimeMillis()));
+        file.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        cloudFileMapper.insertSelective(file);
+    }
+
+    /**
+     * 判断是否文件拥有者
+     *
+     * @param userId
+     * @param fileId
      * @return
      */
     @Override
-    public boolean uploadFile(String srcPath, String dstPath, boolean override) throws Exception {
-        return hdfsUtil.uploadFile(srcPath, dstPath);
+    public boolean checkFileOwner(Long userId, Long fileId) {
+        if (userId == null || fileId == null) {
+            return false;
+        }
+        final CloudFile file = cloudFileMapper.selectByPrimaryKey(fileId);
+        return file.getPortalUserId().equals(userId);
     }
 
+
+    @Override
+    public CloudFile getFileObjByFileId(Long fileId) {
+        if (fileId == null) {
+            return null;
+        }
+        return cloudFileMapper.selectByPrimaryKey(fileId);
+    }
 }

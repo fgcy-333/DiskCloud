@@ -408,21 +408,21 @@ public class HdfsUtil {
     /**
      * 下载HDFS文件
      *
-     * @param path         hdfs目标路径
-     * @param downloadPath 客户端存放路径
+     * @param srcPath
+     * @param dstPath
      * @throws Exception
      */
-    public void downloadFile(String path, String downloadPath) throws Exception {
-        if (StringUtils.isEmpty(path) || StringUtils.isEmpty(downloadPath)) {
+    public void downloadFile(String srcPath, String dstPath) throws Exception {
+        if (StringUtils.isEmpty(srcPath) || StringUtils.isEmpty(dstPath)) {
             return;
         }
         FileSystem fs = null;
         try {
             fs = getFileSystem();
             // hdfs目标路径
-            Path clientPath = new Path(path);
+            Path clientPath = new Path(srcPath);
             // 客户端存放路径
-            Path serverPath = new Path(downloadPath);
+            Path serverPath = new Path(dstPath);
             // 调用文件系统的文件复制方法，第一个参数是否删除原文件true为删除，默认为false
             fs.copyToLocalFile(false, clientPath, serverPath);
         } catch (Exception e) {

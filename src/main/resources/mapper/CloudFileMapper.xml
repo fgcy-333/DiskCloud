@@ -19,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        file_id, file_name, ftp_file_name, portal_user_id, file_path, download_times,
+        file_id, file_name, hdfs_file_name, portal_user_id, file_path, download_times,
     upload_time, folder_id, size, type, version, postfix, update_time, is_delete
     </sql>
 
@@ -50,18 +50,23 @@
         where file_id = #{fileId,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudFile">
+
         insert into cloud_file (file_id, file_name, hdfs_file_name,
                                 portal_user_id, file_path,
                                 download_times, upload_time, folder_id,
                                 size, type, version,
                                 postfix, update_time, is_delete)
         values (#{fileId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{ftpFileName,jdbcType=VARCHAR},
-             #{portalUserId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR},
+                #{portalUserId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR},
                 #{downloadTimes,jdbcType=INTEGER}, #{uploadTime,jdbcType=TIMESTAMP}, #{folderId,jdbcType=BIGINT},
                 #{size,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{version,jdbcType=INTEGER},
                 #{postfix,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.ruijian.disk.pojo.CloudFile">
+        # 主键回填
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
         insert into cloud_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="fileId != null">
@@ -70,8 +75,8 @@
             <if test="fileName != null">
                 file_name,
             </if>
-            <if test="ftpFileName != null">
-                ftp_file_name,
+            <if test="hdfsFileName != null">
+                hdfs_file_name,
             </if>
 
             <if test="portalUserId != null">
@@ -160,8 +165,8 @@
             <if test="fileName != null">
                 file_name = #{fileName,jdbcType=VARCHAR},
             </if>
-            <if test="ftpFileName != null">
-                ftp_file_name = #{ftpFileName,jdbcType=VARCHAR},
+            <if test="hdfsFileName != null">
+                hdfs_file_name = #{ftpFileName,jdbcType=VARCHAR},
             </if>
 
             <if test="portalUserId != null">
@@ -203,7 +208,7 @@
     <update id="updateByPrimaryKey" parameterType="com.ruijian.disk.pojo.CloudFile">
         update cloud_file
         set file_name      = #{fileName,jdbcType=VARCHAR},
-            hdfs_file_name  = #{ftpFileName,jdbcType=VARCHAR},
+            hdfs_file_name = #{ftpFileName,jdbcType=VARCHAR},
             portal_user_id = #{portalUserId,jdbcType=BIGINT},
             file_path      = #{filePath,jdbcType=VARCHAR},
             download_times = #{downloadTimes,jdbcType=INTEGER},

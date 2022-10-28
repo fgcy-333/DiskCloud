@@ -11,4 +11,8 @@ public interface CloudFolderService {
     List<CloudFolder> getFolderObjsByParentFolderId(Long folderId);
 
     String getCurrentPathByFolderId(Long folderId);
+
+    boolean checkFolderOwner(Long userId, Long folderId);
+
+    CloudFolder getFolderObjByFolderId(Long folderId);
 }

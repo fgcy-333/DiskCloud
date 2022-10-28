@@ -9,5 +9,11 @@ public interface CloudFileService {
 
     List<CloudFile> getFileObjsByFolderId(Long folderId);
 
-    boolean uploadFile(String srcPath, String dstPath, boolean override) throws Exception;
+
+    void addFileRecord(CloudFile file);
+
+
+    boolean checkFileOwner(Long userId, Long fileId);
+
+    CloudFile getFileObjByFileId(Long fileId);
 }
