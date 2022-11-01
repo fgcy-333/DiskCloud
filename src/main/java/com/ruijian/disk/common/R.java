@@ -1,7 +1,10 @@
-package com.ruijian.disk.util;
+package com.ruijian.disk.common;
 
 
-public class R<T> {
+import java.util.HashMap;
+
+
+public class R {
 
     // 结果状态码
     private int code;
@@ -10,34 +13,30 @@ public class R<T> {
     private String msg;
 
     // 响应数据
-    private T data;
+    private HashMap<String, Object> data = new HashMap<>();
 
-    // 接口请求时间
+    //是否成功
     private boolean success;
 
 
-    public static <T> R<T> success(T data) {
+    public static R success() {
         R r = new R();
-        r.setSuccess(true);
-        r.setCode(Code.SUCCESS.getCode());
-        r.setMsg(Code.SUCCESS.getMsg());
-        r.setData(data);
+        r.setSuccess(true).setCode(Code.SUCCESS.getCode()).setMsg(Code.SUCCESS.getMsg());
         return r;
     }
 
-    public static <T> R<T> fail(Code code) {
+    public static R fail(Code code) {
         R r = new R();
-        r.setSuccess(false);
-        r.setCode(code.getCode());
-        r.setMsg(code.getMsg());
+        r.setSuccess(false).setCode(code.getCode()).setMsg(code.getMsg());
         return r;
     }
+
 
     public int getCode() {
         return code;
     }
 
-    public R<T> setCode(int code) {
+    public R setCode(int code) {
         this.code = code;
         return this;
     }
@@ -46,17 +45,17 @@ public class R<T> {
         return msg;
     }
 
-    public R<T> setMsg(String msg) {
+    public R setMsg(String msg) {
         this.msg = msg;
         return this;
     }
 
-    public T getData() {
+    public HashMap<String, Object> getData() {
         return data;
     }
 
-    public R<T> setData(T data) {
-        this.data = data;
+    public R setData(String key, Object val) {
+        this.data.put(key, val);
         return this;
     }
 
@@ -64,9 +63,8 @@ public class R<T> {
         return success;
     }
 
-    public R<T> setSuccess(boolean success) {
+    public R setSuccess(boolean success) {
         this.success = success;
         return this;
     }
-
 }

@@ -1,4 +1,4 @@
-package com.ruijian.disk.util;
+package com.ruijian.disk.common;
 
 public enum Code {
     SUCCESS(2000, "操作成功!"),
@@ -6,6 +6,8 @@ public enum Code {
     UPLOAD_FAIL(5000, "上传错误"),
 
     DOWNLOAD_ERROR(5001, "下载出错"),
+
+    DISABLE_DISK_FAIL(5003, "禁用用户出错"),
 
     NO_PERMISSION(5002, "您没有权限执行该操作");
 

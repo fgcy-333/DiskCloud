@@ -1,5 +1,8 @@
 package com.ruijian.disk.controller;
 
+import com.ruijian.disk.common.Code;
+import com.ruijian.disk.common.Const;
+import com.ruijian.disk.common.R;
 import com.ruijian.disk.pojo.CloudDisk;
 import com.ruijian.disk.pojo.CloudFile;
 import com.ruijian.disk.service.CloudDiskService;
@@ -11,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class CloudFileController {
     @Value("${file.save.path}")
     private String fileSavePath;
 
-    private static Logger log = LoggerFactory.getLogger(CloudFileController.class);
+    private static final Logger log = LoggerFactory.getLogger(CloudFileController.class);
 
     @Autowired
     private HdfsUtil hdfsUtil;
@@ -92,7 +92,7 @@ public class CloudFileController {
             log.error(e.getMessage(), e);
             return R.fail(Code.UPLOAD_FAIL);
         }
-        return R.success(null);
+        return R.success();
     }
 
     @GetMapping("/download")

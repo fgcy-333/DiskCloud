@@ -25,12 +25,45 @@
         where disk_id = #{diskId,jdbcType=BIGINT}
     </select>
 
-    <!--    根据用户id 获取磁盘信息-->
+    <!--根据用户id 获取磁盘信息-->
     <select id="getByUserId" resultType="com.ruijian.disk.pojo.CloudDisk">
         select
         <include refid="Base_Column_List"/>
         from cloud_disk
         where portal_user_id =#{userId}
+    </select>
+
+    <!--根据条件分页获取磁盘信息-->
+    <select id="pageSelect" resultType="com.ruijian.disk.pojo.CloudDisk">
+        select
+        <include refid="Base_Column_List"/>
+        from cloud_disk
+        <if test="userSearchObj!=null">
+            <where>
+                <if test="userSearchObj.name!='' and userSearchObj.name!=null">
+                    user_nick like concat('%',#{userSearchObj.name},'%')
+                </if>
+
+                <if test="userSearchObj.openStatus!='' and userSearchObj.openStatus!=null">
+                   and openStatus =#{userSearchObj.openStatus}
+                </if>
+
+                <if test="userSearchObj.begin!=null">
+                    and  register_time >= #{userSearchObj.begin}
+                </if>
+
+                <if test="userSearchObj.end!=null">
+                    and  register_time &lt;= #{userSearchObj.end}
+                </if>
+            </where>
+        </if>
+        limit #{offset},#{limit}
+    </select>
+
+    <!--获取总记录数 -->
+    <select id="getTotalCount" resultType="java.lang.Long">
+        select count(*)
+        from cloud_disk
     </select>
 
 

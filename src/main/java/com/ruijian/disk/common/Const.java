@@ -1,6 +1,8 @@
-package com.ruijian.disk.util;
+package com.ruijian.disk.common;
 
 public class Const {
+    public static final Integer DISK_DISABLE = 0;
+    public static final Integer DISK_ENABLE = 1;
     private static final int FILE_TYPE_IMG = 1;
     private static final int FILE_TYPE_TXT = 2;
     private static final int FILE_TYPE_VIDEO = 3;

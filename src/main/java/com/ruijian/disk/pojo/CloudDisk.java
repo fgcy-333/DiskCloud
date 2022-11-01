@@ -29,6 +29,4 @@ public class CloudDisk {
     private Long folderId;
 
     private Integer openStatus;
-
-
 }

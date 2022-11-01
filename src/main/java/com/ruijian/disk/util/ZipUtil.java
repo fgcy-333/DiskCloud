@@ -46,15 +46,24 @@ public class ZipUtil {
 
             for (Map<String, String> file : files) {
                 final String filePath = file.get("filePath");
-                String realPath = zipUtil.hdfsPathToRealPath(filePath, fileNameMap,folderName);
+                String realPath = zipUtil.hdfsPathToRealPath(filePath, fileNameMap, folderName);
             }
         }
         return null;
     }
 
-    private String hdfsPathToRealPath(String filePath, HashMap<String, String> fileNameMap,String folderName) {
+    /**
+     * 将远程路径 转为数据库中 记录了的文件真实路径
+     *
+     * @param filePath
+     * @param fileNameMap
+     * @param folderName
+     * @return
+     */
+    // TODO: 2022/10/31
+    private String hdfsPathToRealPath(String filePath, HashMap<String, String> fileNameMap, String folderName) {
 
-
+        return null;
     }
 
 
