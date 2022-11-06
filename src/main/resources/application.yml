@@ -3,6 +3,7 @@ server:
   port: 9001
   servlet:
     context-path: /disk
+
 # 数据源信息
 spring:
   datasource:
@@ -10,10 +11,15 @@ spring:
     url: jdbc:mysql://localhost:3306/cloud_disk?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
     password: root123
+
+
   #  统一时间返回
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
+
+
 #持久层框架信息
 mybatis:
   #指定mapper文件的位置
@@ -30,6 +36,7 @@ mybatis:
 logging:
   config: classpath:logback.xml
 
+
 #文件系统信息
 ## hdfs 配置
 # hdfs 连接url
@@ -45,6 +52,10 @@ file:
 
 # 分页大小
 page:
-  limit:
+  limit: 10
+
+
+
+
 
 

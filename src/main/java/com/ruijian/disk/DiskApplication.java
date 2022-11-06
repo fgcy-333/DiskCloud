@@ -1,5 +1,6 @@
 package com.ruijian.disk;
 
+import com.ruijian.disk.common.Const;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -30,9 +31,16 @@ public class DiskApplication implements CommandLineRunner {
     }
 
     private void initFolder() {
-        final File file = new File(downloadPath);
-        if (!file.exists()) {
-            file.mkdirs();
+        //初始化临时下载文件夹路径
+        final File downloadFile = new File(downloadPath);
+        if (!downloadFile.exists()) {
+            downloadFile.mkdirs();
+        }
+
+        //初始化保存头像路径
+        final File avatarFile = new File(Const.AVATAR_PATH);
+        if (!avatarFile.exists()) {
+            avatarFile.mkdirs();
         }
     }
 

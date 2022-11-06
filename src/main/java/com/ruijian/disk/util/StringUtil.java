@@ -19,4 +19,17 @@ public class StringUtil {
         final String time = String.valueOf(System.currentTimeMillis()).substring(3);
         return uu + time;
     }
+
+    public static boolean isBlank(String name) {
+        if (name == null || "".equals(name) || "undefined".equals(name) || " ".equals(name) || "null".equals(name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isNotBlank(String name) {
+        return !isBlank(name);
+    }
+
 }

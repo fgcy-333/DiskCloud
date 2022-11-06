@@ -1,19 +1,30 @@
 package com.ruijian.disk.common;
 
+import java.io.File;
+
 public class Const {
-    public static final Integer DISK_DISABLE = 0;
-    public static final Integer DISK_ENABLE = 1;
-    private static final int FILE_TYPE_IMG = 1;
-    private static final int FILE_TYPE_TXT = 2;
-    private static final int FILE_TYPE_VIDEO = 3;
-    private static final int FILE_TYPE_VOICE = 4;
-    private static final int FILE_TYPE_OTHER = 5;
 
+    //磁盘用户状态
+    public static final Integer DISK_DISABLE = 0;//禁用
+    public static final Integer DISK_ENABLE = 1; //正常
+    public static final long ROOT_PARENT_ID = 0L;
 
-    public static String ADD_DISK_SPACE = "ADD";
+    //文件类型
+    private static final int FILE_TYPE_IMG = 1;//图片
+    private static final int FILE_TYPE_TXT = 2;//文本
+    private static final int FILE_TYPE_VIDEO = 3;//视频
+    private static final int FILE_TYPE_VOICE = 4;//音频
+    private static final int FILE_TYPE_OTHER = 5;//其他
 
-    public static String SUBTRACT_DISK_SPACE = "SUBTRACT";
-    private static String uniqueStr;
+    //头像文件夹名称
+    public static final String AVATAR = "avatar";
+    //存储文件夹的路径
+    public static final String AVATAR_PATH = System.getProperty("user.dir") + File.separator + AVATAR + File.separator;
+
+    //操作选项
+    public static String ADD_DISK_SPACE = "ADD";//加
+    public static String SUBTRACT_DISK_SPACE = "SUBTRACT";//减
+
 
     public static int getFileType(String postfix) {
         postfix = postfix.toLowerCase();

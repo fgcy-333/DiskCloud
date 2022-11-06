@@ -11,7 +11,7 @@
         <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime"/>
         <result column="folder_id" jdbcType="BIGINT" property="folderId"/>
         <result column="size" jdbcType="INTEGER" property="size"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="version" jdbcType="INTEGER" property="version"/>
         <result column="postfix" jdbcType="VARCHAR" property="postfix"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -59,7 +59,7 @@
         values (#{fileId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{ftpFileName,jdbcType=VARCHAR},
                 #{portalUserId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR},
                 #{downloadTimes,jdbcType=INTEGER}, #{uploadTime,jdbcType=TIMESTAMP}, #{folderId,jdbcType=BIGINT},
-                #{size,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{version,jdbcType=INTEGER},
+                #{size,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER},
                 #{postfix,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.ruijian.disk.pojo.CloudFile">
@@ -97,7 +97,7 @@
             <if test="size != null">
                 size,
             </if>
-            <if test="type != null">
+            <if test="type != null and type!=''">
                 type,
             </if>
             <if test="version != null">
@@ -140,7 +140,7 @@
                 #{folderId,jdbcType=BIGINT},
             </if>
             <if test="size != null">
-                #{size,jdbcType=INTEGER},
+                #{size,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 #{type,jdbcType=INTEGER},
@@ -187,8 +187,8 @@
             <if test="size != null">
                 size = #{size,jdbcType=INTEGER},
             </if>
-            <if test="type != null">
-                type = #{type,jdbcType=INTEGER},
+            <if test="type != null and type!=''">
+                type = #{type,jdbcType=VARCHAR},
             </if>
             <if test="version != null">
                 version = #{version,jdbcType=INTEGER},
@@ -215,7 +215,7 @@
             upload_time    = #{uploadTime,jdbcType=TIMESTAMP},
             folder_id      = #{folderId,jdbcType=BIGINT},
             size           = #{size,jdbcType=INTEGER},
-            type           = #{type,jdbcType=INTEGER},
+            type           = #{type,jdbcType=VARCHAR},
             version        = #{version,jdbcType=INTEGER},
             postfix        = #{postfix,jdbcType=VARCHAR},
             update_time    = #{updateTime,jdbcType=TIMESTAMP},

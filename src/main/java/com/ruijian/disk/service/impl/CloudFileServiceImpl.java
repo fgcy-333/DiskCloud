@@ -85,4 +85,15 @@ public class CloudFileServiceImpl implements CloudFileService {
         }
         return cloudFileMapper.selectByPrimaryKey(fileId);
     }
+
+    @Override
+    public void renameFile(CloudFile cloudFile) throws Exception {
+        if (cloudFile == null) {
+            throw new Exception("cloudFile为空");
+        }
+        if (cloudFile.getFileId() == null || StringUtil.isBlank(cloudFile.getFileName())) {
+            throw new Exception("重命名时发现fileId或name为空");
+        }
+        cloudFileMapper.updateByPrimaryKeySelective(cloudFile);
+    }
 }

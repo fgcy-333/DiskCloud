@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@SpringBootTest
+//@SpringBootTest
 public class TestHdfs {
 
     @Autowired
@@ -28,6 +28,12 @@ public class TestHdfs {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Test
+    public void dsf() {
+        System.getProperty("user.dir");
     }
 
 }

@@ -15,7 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.Path;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +29,7 @@ import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 @Controller
+@RequestMapping("/folder")
 public class CloudFolderController {
     @Autowired
     private CloudFolderService folderService;
@@ -74,5 +80,26 @@ public class CloudFolderController {
             returnMap.put("msg", Code.DOWNLOAD_ERROR.getMsg());
             return new ResponseEntity(returnMap, HttpStatus.BAD_REQUEST);
         }
+    }
+
+
+    @RequestMapping("/list/{id}")
+    @ResponseBody
+    public R folderList(@PathVariable("id") Long id) {
+/*        final HashMap<String, Object> map = new HashMap<>();
+        final HashMap<String, Object> map1 = new HashMap<>();
+        map1.put("childrenList", null);
+        map1.put("id", "1");
+        map1.put("name", "root/");
+        map1.put("parentId", "1");
+
+        final ArrayList<HashMap<String, Object>> param = new ArrayList<>();
+        param.add(map1);
+        map.put("childrenList", param);
+        map.put("id", "1");
+        map.put("name", "root/");
+        map.put("parentId", "0");*/
+
+        return R.success().setData("dir", folderService.listFolder(id));
     }
 }

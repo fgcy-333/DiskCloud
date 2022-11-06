@@ -30,7 +30,7 @@ public class CloudFile {
 
     private Integer size;
 
-    private Integer type;
+    private String type;
 
     private Integer version;
 

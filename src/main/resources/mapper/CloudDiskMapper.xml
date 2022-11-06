@@ -44,8 +44,8 @@
                     user_nick like concat('%',#{userSearchObj.name},'%')
                 </if>
 
-                <if test="userSearchObj.openStatus!='' and userSearchObj.openStatus!=null">
-                   and openStatus =#{userSearchObj.openStatus}
+                <if test="userSearchObj.openStatus!=null">
+                   and open_status =#{userSearchObj.openStatus}
                 </if>
 
                 <if test="userSearchObj.begin!=null">
@@ -55,6 +55,7 @@
                 <if test="userSearchObj.end!=null">
                     and  register_time &lt;= #{userSearchObj.end}
                 </if>
+
             </where>
         </if>
         limit #{offset},#{limit}

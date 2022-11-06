@@ -9,6 +9,7 @@ import com.ruijian.disk.service.CloudDiskService;
 import com.ruijian.disk.service.CloudFileService;
 import com.ruijian.disk.service.CloudFolderService;
 import com.ruijian.disk.util.*;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
-@RequestMapping("/cloudFile")
+@RequestMapping("/file")
 public class CloudFileController {
 
     @Value("${file.save.path}")
@@ -57,7 +56,9 @@ public class CloudFileController {
             final long size = uploadFile.getSize();
             String name = uploadFile.getOriginalFilename();
             String postfix = name.substring(name.indexOf("."));
-            int type = Const.getFileType(postfix);
+
+            // TODO: 2022/11/4 类型是字符串
+//            int type = Const.getFileType(postfix);
 
             File folder = new File(fileSavePath);
             if (!folder.isDirectory()) {
@@ -77,7 +78,7 @@ public class CloudFileController {
                 file = new CloudFile();
                 file.setFileName(name);
                 file.setPostfix(postfix);
-                file.setType(type);
+                file.setType("s");
                 file.setSize(Math.toIntExact(size));
                 file.setFilePath(folderPath);
                 file.setPortalUserId(userId);
@@ -130,5 +131,31 @@ public class CloudFileController {
             return new ResponseEntity(returnMap, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+
+    /**
+     * 查找某个目录下的所有文件
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("list/{id}")
+    @ResponseBody
+    public R list(@PathVariable("id") Long id) {
+        final List<CloudFile> files = cloudFileService.getFileObjsByFolderId(id);
+        return R.success().setData("files", files);
+    }
+
+
+    @PostMapping("/rename")
+    public R renameFile(@RequestBody CloudFile cloudFile) {
+        try {
+            cloudFileService.renameFile(cloudFile);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return R.fail(Code.RENAME_ERR);
+        }
+        return R.success();
     }
 }

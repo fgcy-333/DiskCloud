@@ -16,4 +16,6 @@ public interface CloudFileService {
     boolean checkFileOwner(Long userId, Long fileId);
 
     CloudFile getFileObjByFileId(Long fileId);
+
+    void renameFile(CloudFile cloudFile) throws Exception;
 }

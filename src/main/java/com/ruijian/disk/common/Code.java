@@ -7,9 +7,11 @@ public enum Code {
 
     DOWNLOAD_ERROR(5001, "下载出错"),
 
+    NO_PERMISSION(5002, "您没有权限执行该操作"),
+
     DISABLE_DISK_FAIL(5003, "禁用用户出错"),
 
-    NO_PERMISSION(5002, "您没有权限执行该操作");
+    RENAME_ERR(5004, "重命名失败");
 
 
     private final int code;

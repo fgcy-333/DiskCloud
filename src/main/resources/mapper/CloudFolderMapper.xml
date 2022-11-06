@@ -5,7 +5,7 @@
         <id column="folder_id" jdbcType="BIGINT" property="folderId"/>
         <result column="file_folder_name" jdbcType="VARCHAR" property="fileFolderName"/>
         <result column="parent_folder_id" jdbcType="BIGINT" property="parentFolderId"/>
-        <result column="hdfs_folder_name" jdbcType="VARCHAR" property="ftpFolderName"/>
+        <result column="hdfs_folder_name" jdbcType="VARCHAR" property="hdfsFolderName"/>
         <result column="portal_user_id" jdbcType="BIGINT" property="portalUserId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -41,7 +41,7 @@
                                   update_time,
                                   is_delete)
         values (#{folderId,jdbcType=BIGINT}, #{fileFolderName,jdbcType=VARCHAR}, #{parentFolderId,jdbcType=BIGINT},
-                #{ftpFolderName,jdbcType=VARCHAR}, #{portalUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+                #{hdfsFolderName,jdbcType=VARCHAR}, #{portalUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
                 #{updateTime,jdbcType=TIMESTAMP}, #{groupId,jdbcType=BIGINT}, #{folderType,jdbcType=INTEGER},
                 #{isDelete,jdbcType=INTEGER})
     </insert>
@@ -57,7 +57,7 @@
             <if test="parentFolderId != null">
                 parent_folder_id,
             </if>
-            <if test="ftpFolderName != null">
+            <if test="hdfsFolderName != null">
                 hdfs_folder_name,
             </if>
             <if test="portalUserId != null">
@@ -83,8 +83,8 @@
             <if test="parentFolderId != null">
                 #{parentFolderId,jdbcType=BIGINT},
             </if>
-            <if test="ftpFolderName != null">
-                #{ftpFolderName,jdbcType=VARCHAR},
+            <if test="hdfsFolderName != null">
+                #{hdfsFolderName,jdbcType=VARCHAR},
             </if>
             <if test="portalUserId != null">
                 #{portalUserId,jdbcType=BIGINT},
@@ -115,8 +115,8 @@
             <if test="parentFolderId != null">
                 parent_folder_id = #{parentFolderId,jdbcType=BIGINT},
             </if>
-            <if test="ftpFolderName != null">
-                hdfs_folder_name = #{ftpFolderName,jdbcType=VARCHAR},
+            <if test="hdfsFolderName != null">
+                hdfs_folder_name = #{hdfsFolderName,jdbcType=VARCHAR},
             </if>
             <if test="portalUserId != null">
                 portal_user_id = #{portalUserId,jdbcType=BIGINT},
@@ -137,7 +137,7 @@
         update cloud_folder
         set file_folder_name = #{fileFolderName,jdbcType=VARCHAR},
             parent_folder_id = #{parentFolderId,jdbcType=BIGINT},
-            hdfs_folder_name = #{ftpFolderName,jdbcType=VARCHAR},
+            hdfs_folder_name = #{hdfsFolderName,jdbcType=VARCHAR},
             portal_user_id   = #{portalUserId,jdbcType=BIGINT},
             create_time      = #{createTime,jdbcType=TIMESTAMP},
             update_time      = #{updateTime,jdbcType=TIMESTAMP},
