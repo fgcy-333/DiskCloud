@@ -16,8 +16,8 @@ public class StringUtil {
      */
     public static String getUniqueStr(int num) throws Exception {
         final UUID uuid = UUID.randomUUID();
-        final String uu = uuid.toString().substring(10);
-        final String time = String.valueOf(System.currentTimeMillis()).substring(3);
+        final String uu = uuid.toString();
+        final String time = String.valueOf(System.currentTimeMillis());
         String s = uu + time;
         int length = s.length();
         if (length < num) {

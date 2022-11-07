@@ -58,7 +58,7 @@ public class CloudFolderServiceImpl implements CloudFolderService {
         if (cloudFolder.getParentFolderId().equals(Const.ROOT_PARENT_ID)) {
             return File.separator + hdfsFolderName;
         }
-        return File.separator + folderPath + hdfsFolderName;
+        return File.separator + folderPath + File.separator + hdfsFolderName;
     }
 
     /**
@@ -155,7 +155,7 @@ public class CloudFolderServiceImpl implements CloudFolderService {
         //当前文件夹
         String hdfsFolderName = parentFolder.getHdfsFolderName();
         //新建文件夹
-        String uniqueStr = StringUtil.getUniqueStr(5);
+        String uniqueStr = StringUtil.getUniqueStr(8);
 
         //新文件夹的路径
         String pathForNew = null;

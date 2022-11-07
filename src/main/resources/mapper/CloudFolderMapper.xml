@@ -10,13 +10,15 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="folder_path" jdbcType="VARCHAR" property="folderPath"/>
         <result column="folder_type" jdbcType="INTEGER" property="folderType"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
     </resultMap>
 
 
     <sql id="Base_Column_List">
         folder_id, file_folder_name, parent_folder_id, hdfs_folder_name,portal_user_id, create_time,folder_type,
-    update_time, is_delete, group_id
+    update_time, is_delete, group_id,folder_path
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -215,9 +217,9 @@
             create_time      = #{createTime,jdbcType=TIMESTAMP},
             update_time      = #{updateTime,jdbcType=TIMESTAMP},
             is_delete        = #{isDelete,jdbcType=INTEGER},
-            folder_path        = #{folderPath,jdbcType=VARCHAR},
-            folder_type        = #{folderType,jdbcType=INTEGER},
-            group_id           = #{groupId,jdbcType=BIGINT}
+            folder_path      = #{folderPath,jdbcType=VARCHAR},
+            folder_type      = #{folderType,jdbcType=INTEGER},
+            group_id         = #{groupId,jdbcType=BIGINT}
         where folder_id = #{folderId,jdbcType=BIGINT}
     </update>
 </mapper>

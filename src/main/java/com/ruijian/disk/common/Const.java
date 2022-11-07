@@ -24,11 +24,22 @@ public class Const {
 
 
     //文件类型
-    private static final String FILE_TYPE_IMG = "img";//图片
-    private static final String FILE_TYPE_TXT = "txt";//文本
+    //图片
+    private static final String FILE_TYPE_IMG = "img";
+    //文本
+    private static final String FILE_TYPE_TXT = "txt";
+    private static final String FILE_TYPE_WROD = "word";
+    private static final String FILE_TYPE_EXCEL = "excel";
+    private static final String FILE_TYPE_PDF = "pdf";
+    private static final String FILE_TYPE_PPT = "ppt";
+
     private static final String FILE_TYPE_VIDEO = "vedio";//视频
-    private static final String FILE_TYPE_VOICE = "audio";//音频
-    private static final String FILE_TYPE_OTHER = "other";//其他
+
+    private static final String FILE_TYPE_VOICE = "music";//音频
+
+    private static final String FILE_TYPE_OTHER = "unknown";//其他
+
+    private static final String FILE_TYPE_ZIP = "zip";//压缩文件
 
     //头像文件夹名称
     public static final String AVATAR = "avatar";
@@ -44,6 +55,8 @@ public class Const {
         postfix = postfix.toLowerCase();
         String type = FILE_TYPE_OTHER;
         switch (postfix) {
+
+            //----------------------图片
             case "png":
             case "jpg":
             case "jpeg":
@@ -54,13 +67,27 @@ public class Const {
             case "svg":
                 type = FILE_TYPE_IMG;
                 break;
+
+
             case "doc":
             case "docx":
+                type = FILE_TYPE_WROD;
+                break;
+
             case "pdf":
+                type = FILE_TYPE_PDF;
+                break;
+
             case "xls":
             case "xlsx":
             case "csv":
+                type = FILE_TYPE_EXCEL;
+                break;
+
             case "txt":
+                type = FILE_TYPE_TXT;
+                break;
+
             case "html":
             case "js":
             case "c":
@@ -72,10 +99,14 @@ public class Const {
             case "cpp":
             case "cs":
             case "conf":
+                type = FILE_TYPE_OTHER;
+                break;
+
             case "ppt":
             case "pptx":
-                type = FILE_TYPE_TXT;
+                type = FILE_TYPE_PPT;
                 break;
+
             case "flv":
             case "mp4":
             case "rmvb":
@@ -83,11 +114,20 @@ public class Const {
             case "wav":
                 type = FILE_TYPE_VIDEO;
                 break;
+
             case "mp3":
             case "wma":
             case "flac":
                 type = FILE_TYPE_VOICE;
                 break;
+
+            case "zip":
+            case "rar":
+                type = FILE_TYPE_ZIP;
+                break;
+
+            default:
+                type = FILE_TYPE_OTHER;
         }
         return type;
     }

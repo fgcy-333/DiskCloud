@@ -67,7 +67,7 @@ public class CloudFileController {
             //上传至hdfs
             // TODO: 2022/10/27 以后可以弄一个大文件秒传
             String folderPath = cloudFolderService.getCurrentPathByFolderId(folderId);
-            String hdfsFileName = StringUtil.getUniqueStr(10);
+            String hdfsFileName = StringUtil.getUniqueStr(15);
             String tempFilePath = fileSavePath + hdfsFileName + postfix;
             file.transferTo(new File(tempFilePath));
             final boolean upload = hdfsUtil.uploadFile(tempFilePath, folderPath);
@@ -86,6 +86,8 @@ public class CloudFileController {
                 cloudFile.setIsDelete(Const.FORMAL);
                 cloudFile.setHdfsFileName(hdfsFileName + postfix);
                 cloudFileService.addFileRecord(cloudFile);
+            } else {
+                return R.fail(Code.UPLOAD_FAIL);
             }
 
             CloudDisk cloudDisk = cloudDiskService.getDiskInfoByUserId(userId);
