@@ -1,6 +1,7 @@
 package com.ruijian.disk;
 
 import com.ruijian.disk.util.HdfsUtil;
+import org.apache.hadoop.fs.FileSystem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//@SpringBootTest
+@SpringBootTest
 public class TestHdfs {
 
     @Autowired
@@ -18,7 +19,13 @@ public class TestHdfs {
     @Test
     public void test1() {
         try {
-            final List<Map<String, String>> list = hdfsUtil.listFile("/user/");
+            FileSystem fileSystem = hdfsUtil.getFileSystem();
+            System.out.println(fileSystem);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+/*        try {
+            final List<Map<String, String>> list = hdfsUtil.listFile("/");
             for (Map<String, String> map : list) {
                 final Set<String> keySet = map.keySet();
                 for (String key : keySet) {
@@ -27,7 +34,7 @@ public class TestHdfs {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 

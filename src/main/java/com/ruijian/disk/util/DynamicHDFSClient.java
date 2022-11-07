@@ -1,4 +1,4 @@
-/*
+
 package com.ruijian.disk.util;
 
 import cn.hutool.core.util.ObjectUtil;
@@ -14,10 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-*/
-/**
- *
- *//*
+
+
 
 @Slf4j
 public class DynamicHDFSClient {
@@ -29,8 +27,8 @@ public class DynamicHDFSClient {
 
     public DynamicHDFSClient(String hadoopConfig) {
         // hadoopConfig路径
-        */
-/* 设置hdfs连接参数 *//*
+
+/* 设置hdfs连接参数 */
 
         conf = new Configuration();
         if (StringUtils.isBlank(hadoopConfig)) {
@@ -47,8 +45,8 @@ public class DynamicHDFSClient {
         // conf.set("dfs.client.use.datanode.hostname", "true");
         // 缓存 fs, 避免多 datanode 异常：Caused by: java.io.IOException: Filesystem closed
         conf.setBoolean("fs.hdfs.impl.disable.cache", true);
-        */
-/* get client *//*
+
+/* get client */
 
         try {
             log.info("get hdfs client");
@@ -59,8 +57,8 @@ public class DynamicHDFSClient {
         }
     }
 
-    */
-/* 手动关闭客户端 *//*
+
+/* 手动关闭客户端 */
 
     public void close() {
         try {
@@ -72,26 +70,26 @@ public class DynamicHDFSClient {
         }
     }
 
-    */
+
 /**
      * 本地文件上传hdfs
      *
      * @param localFileStr
      * @param dstFileStr
-     *//*
+     */
 
     public void copyFromLocalFile(String localFileStr, String dstFileStr) {
         copyFromLocalFile(true, localFileStr, dstFileStr);
     }
 
-    */
+
 /**
      * 本地文件上传hdfs
      *
      * @param override
      * @param localFileStr
      * @param dstFileStr
-     *//*
+     */
 
     public void copyFromLocalFile(Boolean override, String localFileStr, String dstFileStr) {
         try {
@@ -101,24 +99,24 @@ public class DynamicHDFSClient {
         }
     }
 
-    */
+
 /**
      * 创建hdfs文件
-     *//*
+     */
 
     public FSDataOutputStream createFile2(String filename) throws Exception {
         Path filePath = new Path(filename);
         return fs.create(filePath, true);
     }
 
-    */
+
 /**
      * 读取hdfs指定目录下文件列表
      *
      * @param path
      * @param recursion
      * @throws Exception
-     *//*
+     */
 
     public List<FileStatus> listFile2(Path path, boolean recursion) throws Exception {
         List<FileStatus> files = new ArrayList<>();
@@ -139,27 +137,27 @@ public class DynamicHDFSClient {
         return files;
     }
 
-    */
+
 /**
      * 判断文件是否存在
      *
      * @param fileName
      * @return
      * @throws Exception
-     *//*
+     */
 
     public boolean checkFileExist(String fileName) throws Exception {
         Path path = new Path(fileName);
         return fs.exists(path);
     }
 
-    */
+
 /**
      * @param path
      * @param recursion 是否包括子目录文件
      * @return
      * @throws Exception
-     *//*
+     */
 
     public List<String> listFile(Path path, boolean recursion) throws Exception {
         List<FileStatus> fileStatusList = listFile2(path, recursion);
@@ -181,7 +179,7 @@ public class DynamicHDFSClient {
         return files;
     }
 
-    */
+
 /**
      * 获取path目录下 & 文件名包含containsKey & 最后生成的目录
      *
@@ -189,7 +187,7 @@ public class DynamicHDFSClient {
      * @param containsKey
      * @return
      * @throws Exception
-     *//*
+     */
 
     public String getLastDir(Path path, String containsKey) throws Exception {
         String file = "";
@@ -212,14 +210,14 @@ public class DynamicHDFSClient {
     }
 
 
-    */
+
 /**
      * 在HDFS创建文件夹
      *
      * @param path
      * @return
      * @throws Exception
-     *//*
+     */
 
     public boolean mkdir(String path) {
         boolean isOk = false;
@@ -240,14 +238,14 @@ public class DynamicHDFSClient {
         return isOk;
     }
 
-    */
+
 /**
      * 判断HDFS文件是否存在
      *
      * @param path
      * @return true 存在  false 不存在
      * @throws Exception
-     *//*
+     */
 
     public boolean existFile(String path) {
         boolean isExists = false;
@@ -263,14 +261,14 @@ public class DynamicHDFSClient {
         return isExists;
     }
 
-    */
+
 /**
      * HDFS远程文件复制
      *
      * @param sourcePath 资源文件path
      * @param targetPath 目标文件path
      * @throws Exception
-     *//*
+     */
 
     public void copyRemoteFile(String sourcePath, String targetPath) {
         try {
@@ -282,8 +280,8 @@ public class DynamicHDFSClient {
                 log.info("copyRemoteFile sourcePath {} is not exist", sourcePath);
                 return;
             }
-            */
-/* 2. copy remote*//*
+
+/* 2. copy remote*/
 
             // source
             Path oldPath = new Path(sourcePath);
@@ -296,14 +294,14 @@ public class DynamicHDFSClient {
         }
     }
 
-    */
+
 /**
      * 删除HDFS文件 不知处删除目录
      *
      * @param path
      * @throws Exception
      * @returnhadoo
-     *//*
+     */
 
     public boolean deleteFile(String path) {
         if (StringUtils.isEmpty(path)) {
@@ -322,13 +320,13 @@ public class DynamicHDFSClient {
         return isOk;
     }
 
-    */
+
 /**
      * 删除hdf目录
      *
      * @param path
      * @return
-     *//*
+     */
 
     public void deleteDir(String path) {
         try {
@@ -357,4 +355,4 @@ public class DynamicHDFSClient {
 
 
 }
-*/
+

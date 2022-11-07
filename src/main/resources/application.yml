@@ -18,6 +18,13 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
+  #配置接收的文件的大小
+  servlet:
+    multipart:
+      max-file-size: 4096MB
+      max-request-size: 4096MB
+
+
 
 
 #持久层框架信息
@@ -41,7 +48,7 @@ logging:
 ## hdfs 配置
 # hdfs 连接url
 hdfs:
-  url: hdfs://127.0.0.1:9000
+  url: hdfs://localhost:9000
   userName: root
   dataNode: /dataNodeFile/
 

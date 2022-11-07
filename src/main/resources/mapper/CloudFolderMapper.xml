@@ -10,11 +10,15 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="folder_type" jdbcType="INTEGER" property="folderType"/>
     </resultMap>
+
+
     <sql id="Base_Column_List">
-        folder_id, file_folder_name, parent_folder_id, hdfs_folder_name, portal_user_id, create_time,
-    update_time, is_delete
+        folder_id, file_folder_name, parent_folder_id, hdfs_folder_name,portal_user_id, create_time,folder_type,
+    update_time, is_delete, group_id
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -35,104 +39,173 @@
         from cloud_folder
         where folder_id = #{folderId,jdbcType=BIGINT}
     </delete>
+
+
     <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudFolder">
         insert into cloud_folder (folder_id, file_folder_name, parent_folder_id,
                                   hdfs_folder_name, portal_user_id, create_time,
-                                  update_time,
-                                  is_delete)
-        values (#{folderId,jdbcType=BIGINT}, #{fileFolderName,jdbcType=VARCHAR}, #{parentFolderId,jdbcType=BIGINT},
-                #{hdfsFolderName,jdbcType=VARCHAR}, #{portalUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
-                #{updateTime,jdbcType=TIMESTAMP}, #{groupId,jdbcType=BIGINT}, #{folderType,jdbcType=INTEGER},
-                #{isDelete,jdbcType=INTEGER})
+                                  update_time, folder_type, is_delete, group_id, folder_path)
+        values (#{folderId,jdbcType=BIGINT},
+                #{fileFolderName,jdbcType=VARCHAR},
+                #{parentFolderId,jdbcType=BIGINT},
+                #{hdfsFolderName,jdbcType=VARCHAR},
+                #{portalUserId,jdbcType=BIGINT},
+                #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP},
+                #{folderType,jdbcType=INTEGER},
+                #{isDelete,jdbcType=INTEGER},
+                #{groupId,jdbcType=BIGINT},
+                #{folderPath,jdbcType=VARCHAR})
     </insert>
+
+
     <insert id="insertSelective" parameterType="com.ruijian.disk.pojo.CloudFolder">
         insert into cloud_folder
         <trim prefix="(" suffix=")" suffixOverrides=",">
+
             <if test="folderId != null">
                 folder_id,
             </if>
+
             <if test="fileFolderName != null">
                 file_folder_name,
             </if>
+
             <if test="parentFolderId != null">
                 parent_folder_id,
             </if>
+
             <if test="hdfsFolderName != null">
                 hdfs_folder_name,
             </if>
+
             <if test="portalUserId != null">
                 portal_user_id,
             </if>
+
             <if test="createTime != null">
                 create_time,
             </if>
+
             <if test="updateTime != null">
                 update_time,
             </if>
+
             <if test="isDelete != null">
                 is_delete,
             </if>
+
+            <if test="folderPath != null">
+                folder_path,
+            </if>
+
+            <if test="folderType != null">
+                folder_type,
+            </if>
+
+            <if test="groupId != null">
+                group_id,
+            </if>
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+
             <if test="folderId != null">
                 #{folderId,jdbcType=BIGINT},
             </if>
+
             <if test="fileFolderName != null">
                 #{fileFolderName,jdbcType=VARCHAR},
             </if>
+
             <if test="parentFolderId != null">
                 #{parentFolderId,jdbcType=BIGINT},
             </if>
+
             <if test="hdfsFolderName != null">
                 #{hdfsFolderName,jdbcType=VARCHAR},
             </if>
+
             <if test="portalUserId != null">
                 #{portalUserId,jdbcType=BIGINT},
             </if>
+
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="groupId != null">
-                #{groupId,jdbcType=BIGINT},
-            </if>
-            <if test="folderType != null">
-                #{folderType,jdbcType=INTEGER},
-            </if>
+
             <if test="isDelete != null">
                 #{isDelete,jdbcType=INTEGER},
             </if>
+
+            <if test="folderPath != null">
+                #{folderPath,jdbcType=VARCHAR},
+            </if>
+
+            <if test="folderType != null">
+                #{folderType,jdbcType=INTEGER},
+            </if>
+
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
         </trim>
     </insert>
+
+
     <update id="updateByPrimaryKeySelective" parameterType="com.ruijian.disk.pojo.CloudFolder">
         update cloud_folder
         <set>
+
             <if test="fileFolderName != null">
                 file_folder_name = #{fileFolderName,jdbcType=VARCHAR},
             </if>
+
             <if test="parentFolderId != null">
                 parent_folder_id = #{parentFolderId,jdbcType=BIGINT},
             </if>
+
             <if test="hdfsFolderName != null">
                 hdfs_folder_name = #{hdfsFolderName,jdbcType=VARCHAR},
             </if>
+
             <if test="portalUserId != null">
                 portal_user_id = #{portalUserId,jdbcType=BIGINT},
             </if>
+
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="isDelete != null">
                 is_delete = #{isDelete,jdbcType=INTEGER},
             </if>
+
+            <if test="folderPath != null">
+                folder_path = #{folderPath,jdbcType=VARCHAR},
+            </if>
+
+            <if test="folderType != null">
+                folder_type = #{folderType,jdbcType=INTEGER},
+            </if>
+
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+
         </set>
         where folder_id = #{folderId,jdbcType=BIGINT}
     </update>
+
+
     <update id="updateByPrimaryKey" parameterType="com.ruijian.disk.pojo.CloudFolder">
         update cloud_folder
         set file_folder_name = #{fileFolderName,jdbcType=VARCHAR},
@@ -141,7 +214,10 @@
             portal_user_id   = #{portalUserId,jdbcType=BIGINT},
             create_time      = #{createTime,jdbcType=TIMESTAMP},
             update_time      = #{updateTime,jdbcType=TIMESTAMP},
-            is_delete        = #{isDelete,jdbcType=INTEGER}
+            is_delete        = #{isDelete,jdbcType=INTEGER},
+            folder_path        = #{folderPath,jdbcType=VARCHAR},
+            folder_type        = #{folderType,jdbcType=INTEGER},
+            group_id           = #{groupId,jdbcType=BIGINT}
         where folder_id = #{folderId,jdbcType=BIGINT}
     </update>
 </mapper>

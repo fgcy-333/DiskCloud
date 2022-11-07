@@ -36,6 +36,8 @@
         from cloud_file
         where file_id = #{fileId}
     </select>
+
+
     <!--    根据文件夹id 获取 归属于该文件夹的文件-->
     <select id="getFileObjByFolderId" resultType="com.ruijian.disk.pojo.CloudFile">
         select
@@ -49,32 +51,38 @@
         from cloud_file
         where file_id = #{fileId,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudFile">
 
+
+    <insert id="insert" parameterType="com.ruijian.disk.pojo.CloudFile">
         insert into cloud_file (file_id, file_name, hdfs_file_name,
                                 portal_user_id, file_path,
                                 download_times, upload_time, folder_id,
                                 size, type, version,
                                 postfix, update_time, is_delete)
-        values (#{fileId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{ftpFileName,jdbcType=VARCHAR},
+        values (#{fileId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{hdfsFileName,jdbcType=VARCHAR},
                 #{portalUserId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR},
                 #{downloadTimes,jdbcType=INTEGER}, #{uploadTime,jdbcType=TIMESTAMP}, #{folderId,jdbcType=BIGINT},
                 #{size,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER},
                 #{postfix,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
     </insert>
+
+
     <insert id="insertSelective" parameterType="com.ruijian.disk.pojo.CloudFile">
         # 主键回填
-        <selectKey keyProperty="id" resultType="int" order="AFTER">
+        <selectKey keyProperty="fileId" resultType="long" order="AFTER">
             select last_insert_id()
         </selectKey>
+
         insert into cloud_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="fileId != null">
                 file_id,
             </if>
+
             <if test="fileName != null">
                 file_name,
             </if>
+
             <if test="hdfsFileName != null">
                 hdfs_file_name,
             </if>
@@ -82,83 +90,108 @@
             <if test="portalUserId != null">
                 portal_user_id,
             </if>
+
             <if test="filePath != null">
                 file_path,
             </if>
+
             <if test="downloadTimes != null">
                 download_times,
             </if>
+
             <if test="uploadTime != null">
                 upload_time,
             </if>
+
             <if test="folderId != null">
                 folder_id,
             </if>
+
             <if test="size != null">
                 size,
             </if>
+
             <if test="type != null and type!=''">
                 type,
             </if>
+
             <if test="version != null">
                 version,
             </if>
+
             <if test="postfix != null">
                 postfix,
             </if>
+
             <if test="updateTime != null">
                 update_time,
             </if>
+
             <if test="isDelete != null">
                 is_delete,
             </if>
         </trim>
+
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="fileId != null">
                 #{fileId,jdbcType=BIGINT},
             </if>
+
             <if test="fileName != null">
                 #{fileName,jdbcType=VARCHAR},
             </if>
-            <if test="ftpFileName != null">
-                #{ftpFileName,jdbcType=VARCHAR},
+
+            <if test="hdfsFileName != null">
+                #{hdfsFileName,jdbcType=VARCHAR},
             </if>
 
             <if test="portalUserId != null">
                 #{portalUserId,jdbcType=BIGINT},
             </if>
+
             <if test="filePath != null">
                 #{filePath,jdbcType=VARCHAR},
             </if>
+
             <if test="downloadTimes != null">
                 #{downloadTimes,jdbcType=INTEGER},
             </if>
+
             <if test="uploadTime != null">
                 #{uploadTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="folderId != null">
                 #{folderId,jdbcType=BIGINT},
             </if>
+
             <if test="size != null">
                 #{size,jdbcType=VARCHAR},
             </if>
+
             <if test="type != null">
                 #{type,jdbcType=INTEGER},
             </if>
+
             <if test="version != null">
                 #{version,jdbcType=INTEGER},
             </if>
+
             <if test="postfix != null">
                 #{postfix,jdbcType=VARCHAR},
             </if>
+
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="isDelete != null">
                 #{isDelete,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
+
+
     <update id="updateByPrimaryKeySelective" parameterType="com.ruijian.disk.pojo.CloudFile">
         update cloud_file
         <set>
@@ -166,39 +199,49 @@
                 file_name = #{fileName,jdbcType=VARCHAR},
             </if>
             <if test="hdfsFileName != null">
-                hdfs_file_name = #{ftpFileName,jdbcType=VARCHAR},
+                hdfs_file_name = #{hdfsFileName,jdbcType=VARCHAR},
             </if>
 
             <if test="portalUserId != null">
                 portal_user_id = #{portalUserId,jdbcType=BIGINT},
             </if>
+
             <if test="filePath != null">
                 file_path = #{filePath,jdbcType=VARCHAR},
             </if>
+
             <if test="downloadTimes != null">
                 download_times = #{downloadTimes,jdbcType=INTEGER},
             </if>
+
             <if test="uploadTime != null">
                 upload_time = #{uploadTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="folderId != null">
                 folder_id = #{folderId,jdbcType=BIGINT},
             </if>
+
             <if test="size != null">
                 size = #{size,jdbcType=INTEGER},
             </if>
+
             <if test="type != null and type!=''">
                 type = #{type,jdbcType=VARCHAR},
             </if>
+
             <if test="version != null">
                 version = #{version,jdbcType=INTEGER},
             </if>
+
             <if test="postfix != null">
                 postfix = #{postfix,jdbcType=VARCHAR},
             </if>
+
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
+
             <if test="isDelete != null">
                 is_delete = #{isDelete,jdbcType=INTEGER},
             </if>

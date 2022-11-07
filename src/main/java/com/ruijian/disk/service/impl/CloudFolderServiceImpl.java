@@ -4,6 +4,8 @@ import com.ruijian.disk.common.Const;
 import com.ruijian.disk.mapper.CloudFolderMapper;
 import com.ruijian.disk.pojo.CloudFolder;
 import com.ruijian.disk.service.CloudFolderService;
+import com.ruijian.disk.util.HdfsUtil;
+import com.ruijian.disk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +21,9 @@ import java.util.List;
 public class CloudFolderServiceImpl implements CloudFolderService {
     @Autowired
     private CloudFolderMapper cloudFolderMapper;
+
+    @Autowired
+    private HdfsUtil hdfsUtil;
 
     private Logger log = LoggerFactory.getLogger(CloudFolderServiceImpl.class);
 
@@ -49,7 +55,10 @@ public class CloudFolderServiceImpl implements CloudFolderService {
         final CloudFolder cloudFolder = cloudFolderMapper.selectByPrimaryKey(folderId);
         final String folderPath = cloudFolder.getFolderPath();
         final String hdfsFolderName = cloudFolder.getHdfsFolderName();
-        return folderPath + hdfsFolderName;
+        if (cloudFolder.getParentFolderId().equals(Const.ROOT_PARENT_ID)) {
+            return File.separator + hdfsFolderName;
+        }
+        return File.separator + folderPath + hdfsFolderName;
     }
 
     /**
@@ -93,7 +102,7 @@ public class CloudFolderServiceImpl implements CloudFolderService {
                 arr.add(folderFormat(childrenFolder, currentFolder.getFolderId()));
             }
             currentMap.put("childrenList", arr);
-        }else {
+        } else {
             currentMap.put("childrenList", null);
         }
         return currentMap;
@@ -110,5 +119,68 @@ public class CloudFolderServiceImpl implements CloudFolderService {
         currentMap.put("parentId", parentId);
         currentMap.put("childrenList", null);
         return currentMap;
+    }
+
+
+    @Override
+    public void renameFile(CloudFolder cloudFolder) throws Exception {
+        if (cloudFolder == null) {
+            throw new Exception("cloudFolder为空");
+        }
+        Long folderId = cloudFolder.getFolderId();
+        String fileFolderName = cloudFolder.getFileFolderName();
+
+        if (folderId == null || StringUtil.isBlank(fileFolderName)) {
+            throw new Exception("folderId或fileFolderName为空");
+        }
+        cloudFolder = null;
+        cloudFolder.setFolderId(folderId);
+        cloudFolder.setFileFolderName(fileFolderName);
+        cloudFolderMapper.updateByPrimaryKeySelective(cloudFolder);
+    }
+
+
+    @Override
+    public void newFolder(CloudFolder cloudFolder) throws Exception {
+        Long parentFolderId = cloudFolder.getParentFolderId();
+        String fileFolderName = cloudFolder.getFileFolderName();
+        if (parentFolderId == null || StringUtil.isBlank(fileFolderName)) {
+            throw new Exception("parentFolderId或fileFolderName为空");
+        }
+
+        //获取父文件夹信息
+        CloudFolder parentFolder = cloudFolderMapper.selectByPrimaryKey(parentFolderId);
+        //父级文件夹
+        String folderPath = parentFolder.getFolderPath();
+        //当前文件夹
+        String hdfsFolderName = parentFolder.getHdfsFolderName();
+        //新建文件夹
+        String uniqueStr = StringUtil.getUniqueStr(5);
+
+        //新文件夹的路径
+        String pathForNew = null;
+        if (parentFolder.getParentFolderId().equals(Const.ROOT_PARENT_ID)) {
+            pathForNew = hdfsFolderName;
+        } else {
+            pathForNew = folderPath + File.separator + hdfsFolderName;
+        }
+
+        //在hadoop上新建一个文件夹
+        hdfsUtil.mkdir(pathForNew + File.separator + uniqueStr);
+
+
+        //添加数据库记录
+        CloudFolder folder = new CloudFolder();
+        folder.setFileFolderName(fileFolderName);
+        folder.setParentFolderId(parentFolderId);
+        folder.setHdfsFolderName(uniqueStr);
+        folder.setPortalUserId(cloudFolder.getPortalUserId());
+        folder.setCreateTime(new Date());
+        folder.setUpdateTime(new Date());
+        folder.setIsDelete(Const.FORMAL);
+        folder.setFolderPath(pathForNew);
+        folder.setFolderType(Const.PERSONAL_FOLDER);
+        folder.setGroupId(Const.NO_GROUP_ID);
+        cloudFolderMapper.insertSelective(folder);
     }
 }

@@ -11,7 +11,9 @@ public enum Code {
 
     DISABLE_DISK_FAIL(5003, "禁用用户出错"),
 
-    RENAME_ERR(5004, "重命名失败");
+    RENAME_ERR(5004, "重命名失败"),
+
+    NEW_FOLDER_FAIL(5005, "新建文件夹失败");
 
 
     private final int code;

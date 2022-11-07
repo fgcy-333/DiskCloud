@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class CloudFile {
+
     private Long fileId;
 
     private String fileName;

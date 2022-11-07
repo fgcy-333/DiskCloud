@@ -1,6 +1,7 @@
 package com.ruijian.disk.controller;
 
 import com.ruijian.disk.common.R;
+import com.ruijian.disk.pojo.CloudFile;
 import com.ruijian.disk.pojo.CloudFolder;
 import com.ruijian.disk.service.CloudFolderService;
 import com.ruijian.disk.common.Code;
@@ -15,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
 import java.io.File;
@@ -86,20 +84,32 @@ public class CloudFolderController {
     @RequestMapping("/list/{id}")
     @ResponseBody
     public R folderList(@PathVariable("id") Long id) {
-/*        final HashMap<String, Object> map = new HashMap<>();
-        final HashMap<String, Object> map1 = new HashMap<>();
-        map1.put("childrenList", null);
-        map1.put("id", "1");
-        map1.put("name", "root/");
-        map1.put("parentId", "1");
-
-        final ArrayList<HashMap<String, Object>> param = new ArrayList<>();
-        param.add(map1);
-        map.put("childrenList", param);
-        map.put("id", "1");
-        map.put("name", "root/");
-        map.put("parentId", "0");*/
-
         return R.success().setData("dir", folderService.listFolder(id));
+    }
+
+
+    @PostMapping("/rename")
+    @ResponseBody
+    public R renameFile(@RequestBody CloudFolder cloudFolder) {
+        try {
+            folderService.renameFile(cloudFolder);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return R.fail(Code.RENAME_ERR);
+        }
+        return R.success();
+    }
+
+
+    @ResponseBody
+    @PostMapping("/newfolder")
+    public R newFolder(@RequestBody CloudFolder cloudFolder) {
+        try {
+            folderService.newFolder(cloudFolder);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return R.fail(Code.NEW_FOLDER_FAIL);
+        }
+        return R.success();
     }
 }

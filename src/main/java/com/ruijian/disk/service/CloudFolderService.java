@@ -19,4 +19,8 @@ public interface CloudFolderService {
     CloudFolder getFolderObjByFolderId(Long folderId);
 
     HashMap<String, Object> listFolder(Long id);
+
+    void renameFile(CloudFolder cloudFolder) throws Exception;
+
+    void newFolder(CloudFolder cloudFolder) throws Exception;
 }

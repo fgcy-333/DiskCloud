@@ -72,7 +72,7 @@ public class CloudDiskServiceImpl implements CloudDiskService {
      * @return
      */
     private boolean updateUserSize(int size, String opt, Long diskId) {
-        return updateUserSize(size, opt, diskId);
+        return cloudDiskMapper.updateUserSize(size, opt, diskId);
     }
 
 
@@ -156,7 +156,7 @@ public class CloudDiskServiceImpl implements CloudDiskService {
         if (limit == null) {
             limit = size;
         }
-        final List<CloudDisk> disks = cloudDiskMapper.pageSelect(offset, limit,userSearchObj);
+        final List<CloudDisk> disks = cloudDiskMapper.pageSelect(offset, limit, userSearchObj);
         disks.forEach(obj -> {
             obj.setMaxSize(obj.getMaxSize() / 1024 / 1024);
             obj.setCurrentSize(obj.getCurrentSize() / 1024 / 1024);

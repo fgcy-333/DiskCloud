@@ -65,7 +65,7 @@ public class CloudDiskController {
         try {
             final String originalFilename = avatarFile.getOriginalFilename();
             final String suffix = originalFilename.substring(originalFilename.indexOf("."));
-            String hdfsFileName = StringUtil.getUniqueStr() + suffix;
+            String hdfsFileName = StringUtil.getUniqueStr(10) + suffix;
             final StringBuilder sb = new StringBuilder();
             sb.append(request.getScheme()).append(":").append("//").append(request.getServerName()).append(":").append(request.getServerPort()).append(request.getContextPath()).append("/").append(Const.AVATAR).append("/").append(hdfsFileName);
             avatarFile.transferTo(new File(Const.AVATAR_PATH + hdfsFileName));

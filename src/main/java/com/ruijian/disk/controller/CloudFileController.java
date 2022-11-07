@@ -9,7 +9,6 @@ import com.ruijian.disk.service.CloudDiskService;
 import com.ruijian.disk.service.CloudFileService;
 import com.ruijian.disk.service.CloudFolderService;
 import com.ruijian.disk.util.*;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,17 +47,18 @@ public class CloudFileController {
     @Autowired
     private CloudDiskService cloudDiskService;
 
-    @PostMapping("uploadFile")
-    public R uploadFile(MultipartFile uploadFile,
+    @PostMapping("/upload/{folder}")
+    @ResponseBody
+    public R uploadFile(MultipartFile file,
                         @RequestParam(value = "userId") Long userId,
-                        @RequestParam(value = "folderId") Long folderId) {
+                        @PathVariable(value = "folder") Long folderId) {
         try {
-            final long size = uploadFile.getSize();
-            String name = uploadFile.getOriginalFilename();
-            String postfix = name.substring(name.indexOf("."));
+            final long size = file.getSize();
+            String name = file.getOriginalFilename();
+            String postfix = name.substring(name.indexOf(".") + 1);
 
             // TODO: 2022/11/4 类型是字符串
-//            int type = Const.getFileType(postfix);
+            final String fileType = Const.getFileType(postfix);
 
             File folder = new File(fileSavePath);
             if (!folder.isDirectory()) {
@@ -67,28 +67,30 @@ public class CloudFileController {
             //上传至hdfs
             // TODO: 2022/10/27 以后可以弄一个大文件秒传
             String folderPath = cloudFolderService.getCurrentPathByFolderId(folderId);
-            String hdfsFileName = StringUtil.getUniqueStr();
-            String tempFilePath = folder + hdfsFileName + postfix;
-            uploadFile.transferTo(new File(tempFilePath));
+            String hdfsFileName = StringUtil.getUniqueStr(10);
+            String tempFilePath = fileSavePath + hdfsFileName + postfix;
+            file.transferTo(new File(tempFilePath));
             final boolean upload = hdfsUtil.uploadFile(tempFilePath, folderPath);
 
             //添加数据库记录
-            CloudFile file = null;
+            CloudFile cloudFile = null;
             if (upload) {
-                file = new CloudFile();
-                file.setFileName(name);
-                file.setPostfix(postfix);
-                file.setType("s");
-                file.setSize(Math.toIntExact(size));
-                file.setFilePath(folderPath);
-                file.setPortalUserId(userId);
-                file.setHdfsFileName(hdfsFileName + postfix);
-                cloudFileService.addFileRecord(file);
+                cloudFile = new CloudFile();
+                cloudFile.setFileName(name);
+                cloudFile.setPostfix(postfix);
+                cloudFile.setType(fileType);
+                cloudFile.setSize(Math.toIntExact(size));
+                cloudFile.setFilePath(folderPath);
+                cloudFile.setPortalUserId(userId);
+                cloudFile.setFolderId(folderId);
+                cloudFile.setIsDelete(Const.FORMAL);
+                cloudFile.setHdfsFileName(hdfsFileName + postfix);
+                cloudFileService.addFileRecord(cloudFile);
             }
 
             CloudDisk cloudDisk = cloudDiskService.getDiskInfoByUserId(userId);
             //增加磁盘占用
-            cloudDiskService.updateDiskUsageFile(file.getFileId(), cloudDisk.getDiskId(), Const.ADD_DISK_SPACE);
+            cloudDiskService.updateDiskUsageFile(cloudFile.getFileId(), cloudDisk.getDiskId(), Const.ADD_DISK_SPACE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return R.fail(Code.UPLOAD_FAIL);
@@ -149,6 +151,7 @@ public class CloudFileController {
 
 
     @PostMapping("/rename")
+    @ResponseBody
     public R renameFile(@RequestBody CloudFile cloudFile) {
         try {
             cloudFileService.renameFile(cloudFile);

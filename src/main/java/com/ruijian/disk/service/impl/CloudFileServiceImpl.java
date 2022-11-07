@@ -91,9 +91,14 @@ public class CloudFileServiceImpl implements CloudFileService {
         if (cloudFile == null) {
             throw new Exception("cloudFile为空");
         }
-        if (cloudFile.getFileId() == null || StringUtil.isBlank(cloudFile.getFileName())) {
+        Long fileId = cloudFile.getFileId();
+        String fileName = cloudFile.getFileName();
+        if (fileId == null || StringUtil.isBlank(fileName)) {
             throw new Exception("重命名时发现fileId或name为空");
         }
+        cloudFile = null;
+        cloudFile.setFileName(fileName);
+        cloudFile.setFileId(fileId);
         cloudFileMapper.updateByPrimaryKeySelective(cloudFile);
     }
 }

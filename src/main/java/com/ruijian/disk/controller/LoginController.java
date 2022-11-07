@@ -21,10 +21,11 @@ public class LoginController {
     public R login() {
         return R.success()
                 .setData("token", "admin")
+                .setData("portalUserId", "100007")
                 .setData("roles", "[admin]")
                 .setData("name", "admin")
                 .setData("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif")
-                .setData("rootFolderId", "5");
+                .setData("rootFolderId", "2");
     }
 
     /**
