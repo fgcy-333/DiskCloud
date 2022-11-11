@@ -1,5 +1,7 @@
 package com.ruijian.disk.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -44,4 +46,25 @@ public class StringUtil {
         return !isBlank(name);
     }
 
+
+    /**
+     * 将用逗号隔开的字符串转为集合
+     *
+     * @param str
+     * @return
+     */
+    public static List<Long> putStrToList(String str) throws Exception {
+        if (isBlank(str)) {
+            throw new Exception("将用逗号隔开的字符串转为集合,字符串为空");
+        }
+        final ArrayList<Long> longs = new ArrayList<>();
+        final String[] splitArr = str.split(",");
+        for (String s : splitArr) {
+            if (StringUtil.isBlank(s)) {
+                continue;
+            }
+            longs.add(Long.valueOf(s));
+        }
+        return longs;
+    }
 }

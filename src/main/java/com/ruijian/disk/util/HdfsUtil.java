@@ -67,6 +67,11 @@ public class HdfsUtil {
         if (StringUtils.isEmpty(path)) {
             return false;
         }
+
+        if (path.charAt(0) != File.separator.charAt(0)) {
+            path = File.separator + path;
+        }
+
         try {
             if (existFile(path)) {
                 logger.error("hdfs file is exists: {}", path);
@@ -76,7 +81,7 @@ public class HdfsUtil {
             fs = getFileSystem();
             Path srcPath = new Path(path);
             isOk = fs.mkdirs(srcPath);
-            logger.error("hdfs mkdir success: {}", path);
+            logger.info("hdfs mkdir success: {}", path);
         } catch (Exception e) {
             logger.error("hdfs mkdir: {}", e);
         } finally {
@@ -362,7 +367,8 @@ public class HdfsUtil {
             }
             fs = getFileSystem();
             Path srcPath = new Path(path);
-            isOk = fs.deleteOnExit(srcPath);
+//            isOk = fs.deleteOnExit(srcPath);
+            isOk = fs.delete(srcPath, true);
         } catch (Exception e) {
             logger.error("hdfs deleteFile {}", e);
         } finally {

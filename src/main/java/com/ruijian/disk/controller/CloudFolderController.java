@@ -1,25 +1,27 @@
 package com.ruijian.disk.controller;
 
 import com.ruijian.disk.common.R;
-import com.ruijian.disk.pojo.CloudFile;
 import com.ruijian.disk.pojo.CloudFolder;
 import com.ruijian.disk.service.CloudFolderService;
 import com.ruijian.disk.common.Code;
 import com.ruijian.disk.util.HdfsUtil;
+import com.ruijian.disk.util.StringUtil;
 import com.ruijian.disk.util.ZipUtil;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.Path;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,33 +46,39 @@ public class CloudFolderController {
      * 文件夹下载
      *
      * @param userId
-     * @param folderId
+     * @param
      * @return
      */
-    public ResponseEntity<ZipOutputStream> downloadFolder(Long userId, Long folderId) {
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadFolder(Long userId,
+                                                 String folderIds,
+                                                 String fileIds) {
         try {
-            //权限
-            if (!folderService.checkFolderOwner(userId, folderId)) {
-                final HashMap<String, String> returnMap = new HashMap<>();
-                returnMap.put("code", String.valueOf(Code.NO_PERMISSION.getCode()));
-                returnMap.put("msg", Code.NO_PERMISSION.getMsg());
-                return new ResponseEntity(returnMap, HttpStatus.BAD_REQUEST);
+            HashMap<String, List<Long>> downloadTypeMap = new HashMap<>();
+
+            if (StringUtil.isNotBlank(folderIds)) {
+                List<Long> list = StringUtil.putStrToList(folderIds);
+                downloadTypeMap.put("folder", list);
             }
 
-            CloudFolder cloudFolder = folderService.getFolderObjByFolderId(folderId);
-            final String currentPath = folderService.getCurrentPathByFolderId(folderId);
-            hdfsUtil.downloadFile(currentPath, fileSavePath + cloudFolder.getHdfsFolderName());
-            List<File> files = new ArrayList<>();
-            final File file = new File(fileSavePath + cloudFolder.getHdfsFolderName());
-            files.add(file);
-            final ArrayList<Long> paramIds = new ArrayList<>();
-            paramIds.add(folderId);
-            final List<Map<String, String>> listFile = hdfsUtil.listFile(cloudFolder.getFolderPath());
-            ZipOutputStream zipOutputStream = ZipUtil.putFileToZipEntry(listFile, paramIds, cloudFolder.getFileFolderName());
-            return ResponseEntity.ok()
+            if (StringUtil.isNotBlank(fileIds)) {
+                final List<Long> list = StringUtil.putStrToList(fileIds);
+                downloadTypeMap.put("file", list);
+            }
+
+            final Map<String, String> map = ZipUtil.putFileToZipEntry(downloadTypeMap, fileSavePath);
+
+            final ResponseEntity<byte[]> body = ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header("Content-disposition", "attachment; filename=".concat(cloudFolder.getFileFolderName()))
-                    .body(zipOutputStream);
+                    .header("Content-Type", "application/octet-stream")
+                    .header("Content-disposition", "attachment; filename=".concat(map.get("name")))
+                    .body(Files.readAllBytes(Paths.get(map.get("localPath"))));
+
+            //删除zip
+            new File(map.get("localPath")).delete();
+
+
+            return body;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             final HashMap<String, String> returnMap = new HashMap<>();

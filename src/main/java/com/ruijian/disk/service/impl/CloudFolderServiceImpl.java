@@ -147,14 +147,13 @@ public class CloudFolderServiceImpl implements CloudFolderService {
         if (parentFolderId == null || StringUtil.isBlank(fileFolderName)) {
             throw new Exception("parentFolderId或fileFolderName为空");
         }
-
         //获取父文件夹信息
         CloudFolder parentFolder = cloudFolderMapper.selectByPrimaryKey(parentFolderId);
-        //父级文件夹
+        //父级文件夹 的父级文件夹
         String folderPath = parentFolder.getFolderPath();
-        //当前文件夹
+        //父级文件夹名称
         String hdfsFolderName = parentFolder.getHdfsFolderName();
-        //新建文件夹
+        //新建文件夹名称
         String uniqueStr = StringUtil.getUniqueStr(8);
 
         //新文件夹的路径
@@ -166,7 +165,7 @@ public class CloudFolderServiceImpl implements CloudFolderService {
         }
 
         //在hadoop上新建一个文件夹
-        hdfsUtil.mkdir(pathForNew + File.separator + uniqueStr);
+        hdfsUtil.mkdir(File.separator +pathForNew + File.separator + uniqueStr);
 
 
         //添加数据库记录

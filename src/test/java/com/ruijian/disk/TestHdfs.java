@@ -43,4 +43,18 @@ public class TestHdfs {
         System.getProperty("user.dir");
     }
 
+
+    @Test
+    public void deleteByPath(){
+        try {
+            final boolean b1 = hdfsUtil.deleteFile("/root_u100007/");
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

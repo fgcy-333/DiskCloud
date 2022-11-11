@@ -9,6 +9,7 @@ import com.ruijian.disk.service.CloudDiskService;
 import com.ruijian.disk.service.CloudFileService;
 import com.ruijian.disk.service.CloudFolderService;
 import com.ruijian.disk.util.*;
+import lombok.var;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +69,9 @@ public class CloudFileController {
             // TODO: 2022/10/27 以后可以弄一个大文件秒传
             String folderPath = cloudFolderService.getCurrentPathByFolderId(folderId);
             String hdfsFileName = StringUtil.getUniqueStr(15);
-            String tempFilePath = fileSavePath + hdfsFileName + postfix;
+            String tempFilePath = fileSavePath + hdfsFileName + "." + postfix;
             file.transferTo(new File(tempFilePath));
-            final boolean upload = hdfsUtil.uploadFile(tempFilePath, folderPath);
+            final boolean upload = hdfsUtil.uploadFile(tempFilePath, folderPath + File.separator + hdfsFileName + "." + postfix);
 
             //添加数据库记录
             CloudFile cloudFile = null;
@@ -84,7 +85,7 @@ public class CloudFileController {
                 cloudFile.setPortalUserId(userId);
                 cloudFile.setFolderId(folderId);
                 cloudFile.setIsDelete(Const.FORMAL);
-                cloudFile.setHdfsFileName(hdfsFileName + postfix);
+                cloudFile.setHdfsFileName(hdfsFileName + "." + postfix);
                 cloudFileService.addFileRecord(cloudFile);
             } else {
                 return R.fail(Code.UPLOAD_FAIL);
@@ -105,17 +106,17 @@ public class CloudFileController {
         try {
             if (!cloudFileService.checkFileOwner(userId, fileId)) {
                 final HashMap<String, String> returnMap = new HashMap<>();
+                returnMap.put("success", "true");
                 returnMap.put("code", String.valueOf(Code.NO_PERMISSION.getCode()));
                 returnMap.put("msg", Code.NO_PERMISSION.getMsg());
                 return new ResponseEntity(returnMap, HttpStatus.BAD_REQUEST);
             }
-
             CloudFile cloudFile = cloudFileService.getFileObjByFileId(fileId);
             if (cloudFile == null) {
                 throw new Exception("没有该文件");
             }
-            String srcFilePath = cloudFile.getFilePath() + cloudFile.getHdfsFileName();
-            hdfsUtil.downloadFile(srcFilePath, fileSavePath);
+            String srcFilePath = cloudFile.getFilePath() + File.separator + cloudFile.getHdfsFileName();
+            hdfsUtil.downloadFile(srcFilePath, fileSavePath + cloudFile.getHdfsFileName());
             final File file = new File(fileSavePath + cloudFile.getHdfsFileName());
             if (!file.exists()) {
                 throw new Exception("文件不存在,路径:" + fileSavePath + cloudFile.getHdfsFileName());
@@ -130,9 +131,10 @@ public class CloudFileController {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             final HashMap<String, String> returnMap = new HashMap<>();
+            returnMap.put("success", "false");
             returnMap.put("code", String.valueOf(Code.DOWNLOAD_ERROR.getCode()));
             returnMap.put("msg", Code.DOWNLOAD_ERROR.getMsg());
-            return new ResponseEntity(returnMap, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(returnMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
